@@ -14,7 +14,7 @@ class UserSettingResource extends JsonResource
             'id' => $this->id,
             'setting' => $this->setting,
             'value' => $this->value,
-            'switch' => $this->switch ? true : null,
+            'switch' => $this->switch === null ? null : (bool) $this->switch,
         ];
     }
 }

@@ -25,10 +25,46 @@ class CategorySeeder extends Seeder
                 'ru' => 'Диван'
             ],
         ]);
-        Category::create([
+        $category = Category::create([
             'name' => [
                 'uz' => 'Kreslo',
                 'ru' => 'Кресло'
+            ],
+        ]);
+        $category->childCategories()->create([
+            'name' => [
+                'uz' => 'Offis',
+                'ru' => 'Offis ru'
+            ],
+        ]);
+        $childCategory = $category->childCategories()->create([
+            'name' => [
+                'uz' => 'Gaming',
+                'ru' => 'Gaming ru'
+            ],
+        ]);
+        $childCategory->childCategories()->create([
+            'name' => [
+                'uz' => 'Rgb',
+                'ru' => 'Rgb ru'
+            ],
+        ]);
+        $childCategory->childCategories()->create([
+            'name' => [
+                'uz' => 'Woman',
+                'ru' => 'Woman ru'
+            ],
+        ]);
+        $childCategory->childCategories()->create([
+            'name' => [
+                'uz' => 'Black',
+                'ru' => 'Black ru'
+            ],
+        ]);
+        $category->childCategories()->create([
+            'name' => [
+                'uz' => 'Yumshoq',
+                'ru' => 'Yumshoq ru'
             ],
         ]);
         Category::create([

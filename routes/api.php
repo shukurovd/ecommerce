@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\DeliveryMethodController;
@@ -16,45 +16,34 @@ use App\Http\Controllers\StatusOrderController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserPaymentCardsController;
 use App\Http\Controllers\UserSettingController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
-Route::post('login',[AuthController::class, 'login']);
-Route::post('logout',[AuthController::class, 'logout']);
-Route::post('register',[AuthController::class, 'register']);
-Route::post('change-password',[AuthController::class, 'changePassword']);
-Route::get('user',[AuthController::class, 'user'])->middleware('auth:sanctum');
 
+
+
+Route::get('products/{product}/related',[ProductController::class, 'related']);
 
 
 
 Route::apiResources([
-    'categories' => CategoryController::class,
-    'categories.products' => CategoryProductController::class,
-    'statuses' => StatusController::class,
-    'statuses.orders' => StatusOrderController::class,
-    'favorites' => FavoriteController::class,
-    'products' => ProductController::class,
+
     'orders' => OrderController::class,
-    'delivery-method' => DeliveryMethodController::class,
+    'reviews' => ReviewController::class,
+    'statuses' => StatusController::class,
+    'products' => ProductController::class,
+    'settings' => SettingController::class,
+    'favorites' => FavoriteController::class,
+    'categories' => CategoryController::class,
+    'user-settings' => UserSettingController::class,
     'payment-types' => PaymentTypeController::class,
     'user-addresses' =>UserAddressController::class,
-    'user-payment-cards' =>UserPaymentCardsController::class,
-    'reviews' => ReviewController::class,
+    'statuses.orders' => StatusOrderController::class,
     'products.reviews' => ProductReviewController::class,
-    'settings' => SettingController::class,
-    'user-settings' => UserSettingController::class,
+    'delivery-method' => DeliveryMethodController::class,
+    'user-payment-cards' =>UserPaymentCardsController::class,
+    'categories.products' => CategoryProductController::class,
+        
 ]);
 
 
