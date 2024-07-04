@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class RoleSeeder extends Seeder
+class RolePermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -75,8 +75,8 @@ class RoleSeeder extends Seeder
         ];
         $role->syncPermissions($helpDeskPermissions);
         
-        $role = Role::create(['name' => 'shop-manager']);
-        $permissions = [
+        $shopManager = Role::create(['name' => 'shop-manager']);
+        $shopManager->syncPermissions([
             Permission::create(['name' => 'order:viewAny']),
             Permission::create(['name' => 'order:view']),
             Permission::create(['name' => 'order:create']),
@@ -134,8 +134,7 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'payment-type:delete']),
             Permission::create(['name' => 'payment-type:restore']),
 
-        ];
-        $role->syncPermissions($permissions);
+        ]);
         $role->syncPermissions($helpDeskPermissions);
         $role->givePermissionTo($statsPermission);
 

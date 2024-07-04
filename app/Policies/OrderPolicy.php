@@ -11,56 +11,61 @@ class OrderPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Order $order): bool
+    public function view(User $user, Order $order)
     {
-        //
+        return $order->user_id === $user->id;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user)
     {
-        //
+        return $user->hasRole('customer') || $user->hasPermissionTo('order:create');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Order $order): bool
+    public function update(User $user, Order $order)
     {
-        //
+        return $order->user_id === $user->id || $user->hasPermissionTo('order:update');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Order $order): bool
+    public function delete(User $user, Order $order)
     {
-        //
+        if($user->hasRole('customer')){
+            return $order->user_id === $user->id && $order->status_id === 1;
+        }else{
+            return $user->hasPermissionTo('order:delete');
+        }
+        
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Order $order): bool
+    public function restore(User $user, Order $order)
     {
-        //
+        return $user->hasPermissionTo('order:restore');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Order $order): bool
+    public function forceDelete(User $user, Order $order)
     {
-        //
+        return $user->hasPermissionTo('order:forceDelete');
     }
 }
