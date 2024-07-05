@@ -34,6 +34,7 @@ class OrderController extends Controller
    
     public function store(StoreOrderRequest $request)
     {
+        dd($request);
         $sum = 0;
         $products = [];
         $notFoundProducts = [];
@@ -87,7 +88,7 @@ class OrderController extends Controller
             );
         }
         
-        //return 'something went wrong, cant create order';
+        return 'something went wrong, cant create order';
         
     }
 

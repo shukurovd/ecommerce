@@ -6,9 +6,15 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
    
     public function index()
     {
@@ -18,13 +24,14 @@ class ProductController extends Controller
   
     public function store(StoreProductRequest $request)
     {
-        //
+        $product = Product::create($request->toArray());
+        return $this->success('Product create', new ProductResource($product));
     }
 
     
     public function show($id)
     {
-        return Product::with('stocks')->find($id);
+        return new ProductResource(Product::with('stocks')->findOfFail($id));
     }
 
     
@@ -35,7 +42,12 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        //
+        Gate::authorize('product:delete');
+
+        Storage::delete($product->photos()->pluck('path')->toArray());
+        $product->photos()->delete();
+        $product->delete();
+
     }
 
     public function related(Product $product){
