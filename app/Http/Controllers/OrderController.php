@@ -34,7 +34,7 @@ class OrderController extends Controller
    
     public function store(StoreOrderRequest $request)
     {
-        dd($request);
+        //dd($request);
         $sum = 0;
         $products = [];
         $notFoundProducts = [];
@@ -46,9 +46,9 @@ class OrderController extends Controller
             if($stock && $stock->quantity >=(int)$requestProduct['quantity']){
                 
                 $productWithStock = $product->withStock($requestProduct['stock_id']);
-                $productResource= new ProductResource($productWithStock);
-                $sum +=  $productResource['price'];
-                $products[] = $productResource->resolve();
+                $productResource= (new ProductResource($productWithStock))->resolve();
+                $sum += $productResource['discounted_price'] ?? $productResource['price'];
+                $products[] = $productResource;
                 
             }else{
                 $requestProduct['we_have'] = $stock->quantity;

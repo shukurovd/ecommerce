@@ -31,7 +31,7 @@ class ProductController extends Controller
     
     public function show($id)
     {
-        return new ProductResource(Product::with('stocks')->findOfFail($id));
+        return new ProductResource(Product::with('stocks')->find($id));
     }
 
     
