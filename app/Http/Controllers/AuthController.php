@@ -31,7 +31,8 @@ class AuthController extends Controller
     }
 
     public function logout(){
-        
+        //auth()->user()->tokens()->delete();
+        //return $this->success('user logged out');
     }
 
     public function register(RegisterRequest $request){
