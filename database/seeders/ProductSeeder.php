@@ -29,7 +29,7 @@ class ProductSeeder extends Seeder
                     ]),
             ]);
             $product->stocks()->create([
-                "quantity" => rand(1,10),
+                "quantity" => rand(20,40),
                 "attributes" => json_encode([
                     [
                         "attribute_id" => 1,
@@ -37,8 +37,10 @@ class ProductSeeder extends Seeder
                     ],[
                         "attribute_id" => 2,
                         "value_id" => rand(4, 5)
-                    ]
-                    ]),
+                    ],
+                ]),
+                "added_price" => rand(1000000, 6000000),
+
             ]);
             $product->stocks()->create([
                 "quantity" => rand(1,10),

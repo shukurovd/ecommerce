@@ -6,6 +6,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\ProductResource;
+use App\Models\DeliveryMethod;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Stock;
@@ -34,19 +35,23 @@ class OrderController extends Controller
    
     public function store(StoreOrderRequest $request)
     {
-        //dd($request);
         $sum = 0;
         $products = [];
         $notFoundProducts = [];
         $address = UserAddress::find($request->address_id);
+        $deliveryMethod = DeliveryMethod::find($request->delivery_method_id);
+
         foreach($request['products'] as $requestProduct){
             $product = Product::with('stocks')->find($requestProduct['product_id']);
             $product->quantity = $requestProduct['quantity'];
+
             $stock = $product->stocks()->find($requestProduct['stock_id']);
             if($stock && $stock->quantity >=(int)$requestProduct['quantity']){
                 
                 $productWithStock = $product->withStock($requestProduct['stock_id']);
                 $productResource= (new ProductResource($productWithStock))->resolve();
+                
+                $sum +=$productWithStock->stocks[0]->added_price;
                 $sum += $productResource['discounted_price'] ?? $productResource['price'];
                 $products[] = $productResource;
                 
@@ -58,6 +63,9 @@ class OrderController extends Controller
                 
         
         if($notFoundProducts ===[] && $products !==[] && $sum !==0){
+
+            $sum +=$deliveryMethod->sum;
+
             $order = auth()->user()->orders()->create([
                 'comment' => $request->comment,
                 'delivery_method_id' => $request->delivery_method_id,

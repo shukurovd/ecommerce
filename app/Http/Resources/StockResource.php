@@ -15,14 +15,14 @@ class StockResource extends JsonResource
         $result = [
             'stock_id' => $this->id,
             'quantity'=> $this->quantity,
+            'added_price' => $this->added_price,
         ];
 
-        $result = $this->getAttributes($result);
+        return $this->getAttributes($result);
 
-        return $result;
     }
 
-    public function getAttributes(array $result){
+    public function getAttributes(array $result):array{
         $attributes = json_decode($this->attributes);
         foreach($attributes as $stockAttribute){
             $attribute = Attribute::find($stockAttribute->attribute_id);
